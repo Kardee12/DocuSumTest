@@ -1,0 +1,11 @@
+{
+  "APIs": {
+    "BART": "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+    "FLAN-T5": "https://api-inference.huggingface.co/models/google/flan-t5-xxl",
+    "ELECTRA": "https://api-inference.huggingface.co/models/deepset/electra-base-squad2",
+    "DISTILBERT": "https://api-inference.huggingface.co/models/distilbert-base-uncased-distilled-squad",
+    "ROBERTA": "https://api-inference.huggingface.co/models/deepset/roberta-base-squad2",
+    "MBART": "https://api-inference.huggingface.co/models/facebook/mbart-large-50-many-to-many-mmt",
+    "QT5": "potsawee/t5-large-generation-squad-QuestionAnswer"
+  }
+}

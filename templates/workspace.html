@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace - DocuSum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        .container-fluid {
+            padding: 2rem;
+        }
+
+        .back-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #4a0e78;
+            border: none;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #5b54e5;
+        }
+
+        .workspace-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        h3 {
+            color: #4a0e78;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #6c63ff;
+            color: white;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(0, 0, 0, .125);
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #6c63ff, #4a0e78);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #5b54e5, #3d0b66);
+        }
+
+        .btn-outline-danger {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-success:disabled {
+            background-color: #c3e6cb;
+            border-color: #c3e6cb;
+        }
+
+        .pdf-viewer,
+        .results-viewer {
+            background-color: white;
+            border-radius: 15px;
+            padding: 1rem;
+            height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .pdf-viewer p,
+        .results-viewer p {
+            color: #6c757d;
+            text-align: center;
+            margin-top: 40%;
+            font-size: 1.25rem;
+        }
+
+        .accordion-item {
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- Row for Back Button -->
+        <div class="row mb-4">
+            <div class="col-12 d-flex justify-content-start">
+                <button class="back-button" onclick="window.history.back();">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="row workspace-container">
+            <!-- Left side: Workspace -->
+            <div class="col-md-4">
+                <h3>Workspace</h3>
+                <div class="accordion" id="taskAccordion">
+                    <!-- Summarize Section -->
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="headingSummarize">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseSummarize" aria-expanded="false" aria-controls="collapseSummarize">
+                                Summarize
+                            </button>
+                        </h2>
+                        <div id="collapseSummarize" class="accordion-collapse collapse" aria-labelledby="headingSummarize"
+                            data-bs-parent="#taskAccordion">
+                            <div class="accordion-body">
+                                <form method="post" enctype="multipart/form-data" id="sumForm">
+                                    <div class="mb-3">
+                                        <label for="model" class="form-label">Model</label>
+                                        <select class="form-select" id="model" name="model">
+                                            <option>Model 1</option>
+                                            <option>Model 2</option>
+                                        </select>
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button class="btn btn-primary" type="submit" name="action" value="summarize">Summarize</button>
+                                        <button class="btn btn-success" type="button" disabled>Download</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Translate Section -->
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="headingTranslate">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTranslate" aria-expanded="false" aria-controls="collapseTranslate">
+                                Translate
+                            </button>
+                        </h2>
+                        <div id="collapseTranslate" class="accordion-collapse collapse" aria-labelledby="headingTranslate"
+                            data-bs-parent="#taskAccordion">
+                            <div class="accordion-body">
+                                <form method="post" enctype="multipart/form-data" id="translateForm">
+                                    <div class="mb-3">
+                                        <label for="targetLanguage" class="form-label">Target Language</label>
+                                        <select class="form-select" id="targetLanguage" name="targetLanguage">
+                                            <option>Spanish</option>
+                                            <option>French</option>
+                                            <option>German</option>
+                                        </select>
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button class="btn btn-primary" type="submit" name="action" value="translate">Translate</button>
+                                        <button class="btn btn-success" type="button" disabled>Download</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Section -->
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="headingQuestion">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseQuestion" aria-expanded="false" aria-controls="collapseQuestion">
+                                Question
+                            </button>
+                        </h2>
+                        <div id="collapseQuestion" class="accordion-collapse collapse" aria-labelledby="headingQuestion"
+                            data-bs-parent="#taskAccordion">
+                            <div class="accordion-body">
+                                <form method="post" enctype="multipart/form-data" id="questionForm">
+                                    <div class="mb-3">
+                                        <label for="textInputQuestion" class="form-label">Text Input</label>
+                                        <textarea class="form-control" id="textInputQuestion" name="textInputQuestion" rows="3"
+                                            placeholder="Enter your question..."></textarea>
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button class="btn btn-outline-danger" type="reset">Clear</button>
+                                        <button class="btn btn-primary" type="submit" name="action" value="question">Ask</button>
+                                        <button class="btn btn-success" type="button" disabled>Download</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sentiment Analysis Section -->
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="headingSentiment">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseSentiment" aria-expanded="false" aria-controls="collapseSentiment">
+                                Sentiment Analysis
+                            </button>
+                        </h2>
+                        <div id="collapseSentiment" class="accordion-collapse collapse" aria-labelledby="headingSentiment"
+                            data-bs-parent="#taskAccordion">
+                            <div class="accordion-body">
+                                <form method="post" enctype="multipart/form-data" id="sentimentForm">
+                                    <div class="mb-3">
+                                        <label for="model" class="form-label">Model</label>
+                                        <select class="form-select" id="model" name="model">
+                                            <option>Model 1</option>
+                                            <option>Model 2</option>
+                                        </select>
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button class="btn btn-outline-danger" type="reset">Clear</button>
+                                        <button class="btn btn-primary" type="submit" name="action" value="sentiment">Analyze</button>
+                                        <button class="btn btn-success" type="button" disabled>Download</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Right side: PDF Viewer and Results -->
+            <div class="col-md-8">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h3>Original Document</h3>
+                        <div class="pdf-viewer">
+                            {% if extracted_text %}
+                                <p>{{ extracted_text }}</p>
+                            {% else %}
+                                <p>No document content available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Results</h3>
+                        <div class="results-viewer">
+                            {% if results %}
+                                <p>{{ results }}</p>
+                            {% else %}
+                                <p>Results will appear here after processing.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add any necessary JavaScript here
+    </script>
+</body>
+
+</html>
